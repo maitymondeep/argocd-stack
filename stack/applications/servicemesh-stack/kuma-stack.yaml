@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kuma-stack
+  namespace: argocd
+spec:
+  project: experts-live-india
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kuma-system
+  sources:
+    - repoURL: https://github.com/maitymondeep/servicemesh-with-gitops
+      path: kuma-stack
+      targetRevision: main
+      helm:
+        valueFiles:
+          - values.yaml

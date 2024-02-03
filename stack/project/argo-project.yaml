@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: experts-live-india
+  namespace: argocd
+spec:
+  description: "ArgoCD Project for ExpertsLiveIndia"
+  destinations:
+  - namespace: kuma-system
+    server: https://kubernetes.default.svc
+  - namespace: mesh-demo
+    server: https://kubernetes.default.svc
+  sourceRepos:
+  - https://github.com/maitymondeep/servicemesh-with-gitops
+  - https://github.com/maitymondeep/sample-voting-service
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  roles:
+  - name: developer
+    policies:
+    - p, applications, applications, get, *
+    - p, applications, applications, list, *
+    - p, applications, applications, create, *
+    - p, applications, applications, update, *
+    - p, applications, applications, sync, *
+    - p, projects, get, ruby-app
+    - p, applications, projects, get, ruby-app
+    - p, clusters, get, *
