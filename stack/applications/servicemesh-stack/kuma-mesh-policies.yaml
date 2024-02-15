@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kuma-mesh-policies
+  namespace: argocd
+spec:
+  project: experts-live-india
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+  source:
+    repoURL: https://github.com/maitymondeep/servicemesh-with-gitops.git
+    path: mesh-policies/envs/mesh-nonprod/meshes/default
+    directory:
+      recurse: true
+    targetRevision: HEAD
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: mesh-demo
